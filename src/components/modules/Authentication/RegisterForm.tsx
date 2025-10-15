@@ -23,6 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Password from "@/components/ui/Password";
+import { useRegisterMutation } from "@/redux/features/auth/auth.api";
+import { toast } from "sonner";
 
 const registerSchema = z
   .object({
@@ -43,6 +45,8 @@ const registerSchema = z
   });
 
 export default function RegisterForm() {
+  const [register] = useRegisterMutation();
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -53,8 +57,25 @@ export default function RegisterForm() {
       role: "SENDER",
     },
   });
-  const onSubmit = (data: z.infer<typeof registerSchema>) => {
+
+  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     console.log(data);
+    const userData = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      role: data.role,
+    };
+    try {
+      const result = await register(userData).unwrap();
+      console.log(result);
+      if (result?.success) {
+        form.reset();
+        toast.success("Registration successful! Please login.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="maxwidth-md mx-auto mt-10 p-6 border rounded-lg shadow-md flex flex-col gap-4 justify-center items-center">
