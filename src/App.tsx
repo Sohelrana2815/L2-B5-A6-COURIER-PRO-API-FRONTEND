@@ -1,13 +1,17 @@
-import { Button } from "./components/ui/button";
+import { Outlet } from "react-router";
+import CommonLayout from "./components/layouts/CommonLayout";
+import Navbar from "./components/layouts/Navbar";
+import Footer from "./components/layouts/Footer";
 
 function App() {
   return (
     <>
       <div>
-        <h1>Hello World</h1>
-        <div className="flex min-h-svh flex-col items-center justify-center">
-          <Button>Click me</Button>
-        </div>
+        <CommonLayout>
+          <Navbar />
+          <Outlet />
+          <Footer />
+        </CommonLayout>
       </div>
     </>
   );
