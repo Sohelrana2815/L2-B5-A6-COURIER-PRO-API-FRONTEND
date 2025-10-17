@@ -25,6 +25,8 @@ import {
 import Password from "@/components/ui/Password";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import EyePassword from "@/components/ui/EyePassword";
+import { useNavigate } from "react-router";
 
 const registerSchema = z
   .object({
@@ -46,7 +48,7 @@ const registerSchema = z
 
 export default function RegisterForm() {
   const [register] = useRegisterMutation();
-
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -72,16 +74,20 @@ export default function RegisterForm() {
       if (result?.success) {
         form.reset();
         toast.success("Registration successful! Please login.");
+        navigate("/login");
       }
     } catch (error) {
       console.error(error);
     }
   };
   return (
-    <div className="maxwidth-md mx-auto mt-10 p-6 border rounded-lg shadow-md flex flex-col gap-4 justify-center items-center">
+    <div className="flex justify-center gap-4 w-md mx-auto  p-4">
       {/* NAME */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-5 w-full"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -92,7 +98,7 @@ export default function RegisterForm() {
                   <Input placeholder="Enter your name" {...field} />
                 </FormControl>
                 <FormDescription className="sr-only">
-                  This is Description
+                  This is Name FIeld
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -114,7 +120,7 @@ export default function RegisterForm() {
                   />
                 </FormControl>
                 <FormDescription className="sr-only">
-                  This is email
+                  This is email field
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -130,10 +136,10 @@ export default function RegisterForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Password {...field} />
+                  <Password {...field} placeholder="Enter your Password" />
                 </FormControl>
                 <FormDescription className="sr-only">
-                  This is password
+                  This is password field
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -149,10 +155,10 @@ export default function RegisterForm() {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <EyePassword {...field} placeholder="Confirm Password" />
                 </FormControl>
                 <FormDescription className="sr-only">
-                  This is confirmPassword
+                  This is Confirm Password field
                 </FormDescription>
                 <FormMessage />
               </FormItem>

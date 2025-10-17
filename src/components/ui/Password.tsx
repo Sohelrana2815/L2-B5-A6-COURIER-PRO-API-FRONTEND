@@ -3,7 +3,6 @@ import { useId, useMemo, useState } from "react";
 import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function Password({
   value,
@@ -59,14 +58,10 @@ export default function Password({
     <div>
       {/* Password input field with toggle visibility button */}
       <div className="*:not-first:mt-2">
-        <Label className="sr-only" htmlFor={id}>
-          Input with password strength indicator
-        </Label>
         <div className="relative">
           <Input
             id={id}
             className="pe-9"
-            placeholder="Password"
             type={isVisible ? "text" : "password"}
             value={value || ""}
             onChange={onChange}
@@ -74,7 +69,7 @@ export default function Password({
             {...field}
           />
           <button
-            className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground focus:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground focus:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
             type="button"
             onClick={toggleVisibility}
             aria-label={isVisible ? "Hide password" : "Show password"}

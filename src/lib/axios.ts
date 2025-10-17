@@ -2,6 +2,7 @@ import config from "@/config";
 import axios from "axios";
 export const axiosInstance = axios.create({
   baseURL: config.baseURL,
+  withCredentials: true,
 });
 
 // Add a request interceptor
