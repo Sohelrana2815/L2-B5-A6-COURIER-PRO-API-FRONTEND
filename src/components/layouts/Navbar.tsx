@@ -19,18 +19,33 @@ import {
   useUserInfoQuery,
 } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hooks";
+import { role } from "@/constants/role";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home", active: true },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Home", role: "PUBLIC", active: true },
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/admin", label: "Admin Dashboard", role: role.admin },
+  { href: "/sender", label: "Sender Dashboard", role: role.sender },
+  { href: "/receiver", label: "Receiver Dashboard", role: role.receiver },
 ];
 
 export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
   const [logout, { isLoading }] = useLogoutMutation();
   const dispatch = useAppDispatch();
-  console.log(data?.data);
+
+  // Function to filter navigation links based on user role
+  const getFilteredNavLinks = () => {
+    if (!data?.data?.role) {
+      // If no user data, show only public links
+      return navigationLinks.filter((link) => link.role === "PUBLIC");
+    }
+
+    return navigationLinks.filter(
+      (link) => link.role === "PUBLIC" || link.role === data.data.role
+    );
+  };
 
   const handleLogout = async () => {
     try {
@@ -85,7 +100,7 @@ export default function Navbar() {
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
+                  {getFilteredNavLinks().map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink
                         href={link.href}
@@ -108,7 +123,7 @@ export default function Navbar() {
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
+                {getFilteredNavLinks().map((link, index) => (
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       asChild
