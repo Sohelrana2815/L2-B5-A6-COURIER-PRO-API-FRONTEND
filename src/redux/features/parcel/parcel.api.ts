@@ -163,6 +163,55 @@ export const parcelApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+
+    // ADMIN STATUS CHANGE FOR PARCEL
+
+    // block parcel
+    blockParcel: builder.mutation({
+      query: (parcelId: string) => ({
+        url: `/parcel/admin/block/${parcelId}`,
+        method: "PATCH",
+        data: {},
+      }),
+      invalidatesTags: ["parcel"],
+    }),
+    // unblock parcel
+    unblockParcel: builder.mutation({
+      query: (parcelId: string) => ({
+        url: `/parcel/admin/unblock/${parcelId}`,
+        method: "PATCH",
+        data: {},
+      }),
+      invalidatesTags: ["parcel"],
+    }),
+
+    // picked up parcel
+    pickupParcel: builder.mutation({
+      query: (parcelId: string) => ({
+        url: `/parcel/admin/pickup/${parcelId}`,
+        method: "PATCH",
+        data: {},
+      }),
+      invalidatesTags: ["parcel"],
+    }),
+    // in transit parcel
+    inTransitParcel: builder.mutation({
+      query: (parcelId: string) => ({
+        url: `/parcel/admin/start-transit/${parcelId}`,
+        method: "PATCH",
+        data: {},
+      }),
+      invalidatesTags: ["parcel"],
+    }),
+    // deliver parcel
+    deliverParcel: builder.mutation({
+      query: (parcelId: string) => ({
+        url: `/parcel/admin/deliver/${parcelId}`,
+        method: "PATCH",
+        data: {},
+      }),
+      invalidatesTags: ["parcel"],
+    }),
   }),
 });
 
@@ -183,4 +232,9 @@ export const {
   useDeleteUserMutation,
   useRestoreUserMutation,
   useGetParcelsQuery,
+  useBlockParcelMutation,
+  useUnblockParcelMutation,
+  usePickupParcelMutation,
+  useInTransitParcelMutation,
+  useDeliverParcelMutation
 } = parcelApi;
