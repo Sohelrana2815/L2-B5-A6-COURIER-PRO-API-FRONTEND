@@ -1,5 +1,5 @@
+import AllReceivers from "@/pages/Sender/AllReceivers";
 import CreatedParcels from "@/pages/Sender/CreatedParcels";
-import CreateParcel from "@/pages/Sender/CreateParcel";
 import type { ISidebarItems } from "@/types";
 
 export const senderSidebarItems: ISidebarItems[] = [
@@ -7,9 +7,9 @@ export const senderSidebarItems: ISidebarItems[] = [
     title: "Sender Dashboard",
     items: [
       {
-        title: "Create Parcel",
-        url: "/sender/create-parcel",
-        component: CreateParcel,
+        title: "All Receivers",
+        url: "/sender/all-receivers",
+        component: AllReceivers,
       },
     ],
   },
@@ -17,7 +17,7 @@ export const senderSidebarItems: ISidebarItems[] = [
     title: "Parcel Management",
     items: [
       {
-        title: "All Created Parcels",
+        title: "My Created Parcels",
         url: "/sender/created-parcels",
         component: CreatedParcels,
       },

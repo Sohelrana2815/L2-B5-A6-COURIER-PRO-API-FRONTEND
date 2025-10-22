@@ -2,12 +2,16 @@ import App from "@/App";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import About from "@/pages/About";
 import Login from "@/pages/Login";
-import IncomingParcels from "@/pages/Receiver/IncomingParcels";
 import Register from "@/pages/Register";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { senderSidebarItems } from "./senderSidebarItems";
+import { withAuth } from "@/utils/withAuth";
+import Unauthorized from "@/pages/Unauthorized";
+import { role, type TRole } from "@/constants/role";
+import { receiverSidebarItems } from "./receiverSidebarItems";
+import CreateParcel from "@/pages/Sender/CreateParcel";
 
 const router = createBrowserRouter([
   // Common layout
@@ -17,41 +21,52 @@ const router = createBrowserRouter([
     children: [
       {
         path: "about",
-        Component: About,
+        Component: withAuth(About),
       },
     ],
   },
   // Admin layout
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.admin as TRole),
     path: "/admin",
-    children: [...generateRoutes(adminSidebarItems)],
+    children: [
+      { index: true, element: <Navigate to="/admin/analytics" /> },
+      ...generateRoutes(adminSidebarItems),
+    ],
   },
   // Sender layout
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.sender as TRole),
     path: "/sender",
-    children: [...generateRoutes(senderSidebarItems)],
+    children: [
+      { index: true, element: <Navigate to="/sender/created-parcels" /> },
+      ...generateRoutes(senderSidebarItems),
+      // Hidden route - not in sidebar, accessed via "Send Parcel" button
+      { path: "create-parcel", Component: CreateParcel },
+    ],
   },
   // Receiver layout
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.receiver as TRole),
     path: "/receiver",
     children: [
-      {
-        Component: IncomingParcels,
-        path: "incoming-parcels",
-      },
+      { index: true, element: <Navigate to="/receiver/incoming-parcels" /> },
+      ...generateRoutes(receiverSidebarItems),
     ],
   },
   {
-    path: "/login",
     Component: Login,
+    path: "/login",
   },
 
   {
-    path: "/register",
     Component: Register,
+    path: "/register",
+  },
+
+  {
+    Component: Unauthorized,
+    path: "/unauthorized",
   },
 ]);
 
