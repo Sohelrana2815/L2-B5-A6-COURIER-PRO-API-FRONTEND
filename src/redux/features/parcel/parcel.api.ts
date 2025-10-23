@@ -29,6 +29,16 @@ export const parcelApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
     }),
 
+    // GET PARCEL BY ID FOR ADMIN
+    getAdminParcelById: builder.query({
+      query: (parcelId: string) => ({
+        url: `/parcel/admin/${parcelId}`,
+        method: "GET",
+      }),
+      providesTags: ["parcel"],
+      transformResponse: (response) => response.data,
+    }),
+
     updateReceiverProfile: builder.mutation({
       query: (profileData) => ({
         url: "/parcel/receiver/update-profile",
@@ -118,12 +128,16 @@ export const parcelApi = baseApi.injectEndpoints({
     // GET ALL PARCELS ADMIN
 
     getParcels: builder.query({
-      query: () => ({
-        url: "/parcel/admin/all-parcels",
+      // accepts optional object { page, limit }
+      query: (
+        args: { page?: number; limit?: number } = { page: 1, limit: 10 }
+      ) => ({
+        url: `/parcel/admin/all-parcels?page=${args.page}&limit=${args.limit}`,
         method: "GET",
       }),
       providesTags: ["parcel"],
-      transformResponse: (response) => response.data,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: any) => response, // return full payload (data + meta)
     }),
 
     // ADMIN ONLY BLOCK USER
@@ -212,6 +226,15 @@ export const parcelApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["parcel"],
     }),
+
+    // PUBLIC TRACK PARCEL BY TRACKING ID
+    trackParcel: builder.query({
+      query: (trackingId: string) => ({
+        url: `/parcel/public/track-parcel/${trackingId}`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response.data,
+    }),
   }),
 });
 
@@ -219,6 +242,7 @@ export const {
   useCreateParcelMutation,
   useMyCreatedParcelsQuery,
   useGetParcelByIdQuery,
+  useGetAdminParcelByIdQuery,
   useUpdateReceiverProfileMutation,
   useGetAllReceiversQuery,
   useCancelParcelMutation,
@@ -236,5 +260,6 @@ export const {
   useUnblockParcelMutation,
   usePickupParcelMutation,
   useInTransitParcelMutation,
-  useDeliverParcelMutation
+  useDeliverParcelMutation,
+  useTrackParcelQuery,
 } = parcelApi;

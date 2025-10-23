@@ -12,6 +12,7 @@ import Unauthorized from "@/pages/Unauthorized";
 import { role, type TRole } from "@/constants/role";
 import { receiverSidebarItems } from "./receiverSidebarItems";
 import CreateParcel from "@/pages/Sender/CreateParcel";
+import { TrackParcel } from "@/pages/public/TrackParcel";
 
 const router = createBrowserRouter([
   // Common layout
@@ -22,6 +23,14 @@ const router = createBrowserRouter([
       {
         path: "about",
         Component: withAuth(About),
+      },
+      {
+        path: "track-parcel",
+        Component: TrackParcel,
+      },
+      {
+        path: "track-parcel/:trackingId",
+        Component: TrackParcel,
       },
     ],
   },

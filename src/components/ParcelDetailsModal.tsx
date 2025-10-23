@@ -1,4 +1,7 @@
-import { useGetParcelByIdQuery } from "@/redux/features/parcel/parcel.api";
+import {
+  useGetParcelByIdQuery,
+  useGetAdminParcelByIdQuery,
+} from "@/redux/features/parcel/parcel.api";
 import {
   Dialog,
   DialogContent,
@@ -20,20 +23,32 @@ interface ParcelDetailsModalProps {
   parcelId: string | null;
   isOpen: boolean;
   onClose: () => void;
+  isAdmin?: boolean;
 }
 
 export default function ParcelDetailsModal({
   parcelId,
   isOpen,
   onClose,
+  isAdmin = false,
 }: ParcelDetailsModalProps) {
+  // Call both hooks unconditionally at the top level
+  const adminQuery = useGetAdminParcelByIdQuery(parcelId!, {
+    skip: !parcelId || !isAdmin,
+  });
+
+  const userQuery = useGetParcelByIdQuery(parcelId!, {
+    skip: !parcelId || isAdmin,
+  });
+
+  // Use the appropriate query based on isAdmin prop
+  const query = isAdmin ? adminQuery : userQuery;
+
   const {
     data: parcel,
     isLoading,
     error,
-  } = useGetParcelByIdQuery(parcelId!, {
-    skip: !parcelId,
-  });
+  } = query;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString("en-US", {
@@ -62,9 +77,13 @@ export default function ParcelDetailsModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Parcel Details</DialogTitle>
+          <DialogTitle>
+            {isAdmin ? "Admin Parcel Details" : "Parcel Details"}
+          </DialogTitle>
           <DialogDescription>
-            Detailed information about the parcel
+            {isAdmin
+              ? "Detailed information about the parcel (Admin View)"
+              : "Detailed information about the parcel"}
           </DialogDescription>
         </DialogHeader>
 
@@ -123,34 +142,38 @@ export default function ParcelDetailsModal({
               </CardContent>
             </Card>
 
-            {/* Receiver Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Receiver Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Name</p>
-                    <p>{parcel.receiverInfo.name}</p>
+            {/* Sender Information - Admin Only */}
+            {isAdmin && parcel.senderInfo && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Sender Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Name</p>
+                      <p>{parcel.senderInfo.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Phone</p>
+                      <p>{parcel.senderInfo.phone}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Phone</p>
-                    <p>{parcel.receiverInfo.phone}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Email</p>
+                      <p>{parcel.senderInfo.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Address
+                      </p>
+                      <p>{parcel.senderInfo.address}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Address</p>
-                    <p>{parcel.receiverInfo.address}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">City</p>
-                    <p>{parcel.receiverInfo.city}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Parcel Details */}
             <Card>
@@ -214,10 +237,6 @@ export default function ParcelDetailsModal({
                           </div>
                           <p className="text-sm text-gray-600 mt-1">
                             {status.note}
-                          </p>
-                          <p className="text-xs text-gray-400">
-                            Updated by: {status.updatedBy.name}{" "}
-                            <Badge>{status.updatedBy.role}</Badge>
                           </p>
                         </div>
                       </div>

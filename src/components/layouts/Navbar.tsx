@@ -25,6 +25,7 @@ import { role } from "@/constants/role";
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC", active: true },
   { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/track-parcel", label: "Track Parcel", role: "PUBLIC" },
   { href: "/admin", label: "Admin Dashboard", role: role.admin },
   { href: "/sender", label: "Sender Dashboard", role: role.sender },
   { href: "/receiver", label: "Receiver Dashboard", role: role.receiver },

@@ -8,3 +8,5 @@ export interface ISidebarItems {
     component: ComponentType;
   }[];
 }
+
+export * from "./parcel.type";
