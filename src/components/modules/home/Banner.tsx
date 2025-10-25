@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import banner from "../../../assets/images/banner.jpg";
+import banner from "../../../assets/images/banner.webp";
 
 export default function Banner() {
   return (
@@ -23,9 +23,7 @@ export default function Banner() {
             <path d="m3.3 7 8.7 5 8.7-5" />
             <path d="M12 22V12" />
           </svg>
-          <h4 className="text-xl font-medium text-foreground">
-            Delivery
-          </h4>
+          <h4 className="text-xl font-medium text-foreground">Delivery</h4>
         </div>
 
         {/* Main div */}
@@ -36,9 +34,11 @@ export default function Banner() {
               Reliable service every time
             </h3>
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Nullam ac aliquam purus. Donec tempor, metus sed porttitor
-              posuere, elit sapien rutrum elit, eget tincidunt nisl tortor nec
-              metus. Donec tempor rhoncus convallis.
+              We understand the importance of your parcels. That's why we're
+              committed to providing swift, secure, and transparent delivery
+              solutions across the nation. From pickup to final delivery, trust
+              us to handle your shipments with utmost care and precision,
+              ensuring they reach their destination on time, every time.
             </p>
 
             <div className="flex flex-col sm:flex-row w-full max-w-sm items-center gap-2 mx-auto lg:mx-0">

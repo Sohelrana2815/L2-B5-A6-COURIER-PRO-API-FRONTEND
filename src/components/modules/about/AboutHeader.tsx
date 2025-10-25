@@ -1,4 +1,4 @@
-import deliveryMan2 from "../../../assets/images/delivery-man2.png";
+import deliveryMan2 from "../../../assets/images/delivery-man2.webp";
 
 export default function AboutHeader() {
   return (
@@ -88,11 +88,14 @@ export default function AboutHeader() {
                   Our Story
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  Founded with a vision to revolutionize local delivery
-                  services, we've grown from a small startup to a trusted
-                  delivery partner for businesses across the region. Our
-                  commitment to reliability, speed, and customer satisfaction
-                  has made us the preferred choice for thousands of customers.
+                  Our journey began with a simple goal: to make parcel delivery
+                  across the country easier, faster, and more transparent. We
+                  understand that every parcel isn't just a package; it's a
+                  promise. This belief fueled the creation of our
+                  technology-driven delivery platform, ensuring complete control
+                  and peace of mind for both senders and receivers. In a short
+                  span, we've earned trust and are now committed to delivering
+                  swift services to every corner of the nation.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   We understand that every delivery matters, whether it's a
@@ -146,7 +149,7 @@ export default function AboutHeader() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    Professional delivery partners
+                    Professional Delivery Partners
                   </li>
                   <li className="flex items-center gap-3">
                     <svg
@@ -160,7 +163,7 @@ export default function AboutHeader() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    24/7 customer support
+                    24/7 Customer Support
                   </li>
                 </ul>
               </div>
@@ -171,9 +174,11 @@ export default function AboutHeader() {
                 Our Mission
               </h2>
               <p className="text-xl text-muted-foreground  italic">
-                "To be the most trusted and efficient delivery service,
-                connecting businesses with their customers through innovation,
-                reliability, and exceptional service."
+                "Our mission is to establish ourselves as the most reliable and
+                transparent courier service in the country through the use of
+                cutting-edge technology and a dedicated delivery network. We
+                strive to make the delivery process stress-free for every
+                customer, ensuring speed and security at every step."
               </p>
             </div>
           </div>

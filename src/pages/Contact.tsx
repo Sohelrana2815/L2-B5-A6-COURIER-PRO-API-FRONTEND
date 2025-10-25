@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import parcelBeg from "/src/assets/images/parcelbeg.png";
+import parcelBeg from "/src/assets/images/parcelbeg.webp";
 import {
   Form,
   FormControl,
@@ -80,6 +80,9 @@ export default function Contact() {
                   Have a question or need assistance? We're here to help! Fill
                   out the form below and we'll get back to you soon.
                 </p>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  <span className="text-chart-4">Phone:</span> 0123456789
+                </p>
               </div>
 
               <div className="bg-card rounded-2xl p-8 md:p-10 shadow-xl border">
@@ -159,7 +162,7 @@ export default function Contact() {
             <div className="flex justify-center lg:justify-end">
               <div className="relative">
                 <img
-                  src="/src/assets/images/contact.png"
+                  src="/src/assets/images/contact.webp"
                   alt="Contact us"
                   className="w-full max-w-lg h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
                 />

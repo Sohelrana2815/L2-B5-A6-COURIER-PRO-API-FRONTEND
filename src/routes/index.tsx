@@ -4,7 +4,6 @@ import About from "@/pages/About";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { senderSidebarItems } from "./senderSidebarItems";
 import { withAuth } from "@/utils/withAuth";
@@ -16,6 +15,7 @@ import { TrackParcel } from "@/pages/public/TrackParcel";
 import Home from "@/pages/Home";
 import Contact from "@/pages/Contact";
 import NotFound from "@/pages/NotFound";
+import { createBrowserRouter, Navigate } from "react-router";
 
 const router = createBrowserRouter([
   // Common layout

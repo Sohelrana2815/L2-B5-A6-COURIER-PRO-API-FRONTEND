@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import callUsImg from "../../../assets/images/callUs.png";
+import callUsImg from "../../../assets/images/callUs.webp";
+import { Link } from "react-router";
 
 export default function CallUs() {
   return (
@@ -25,16 +26,19 @@ export default function CallUs() {
             </h3>
 
             <p className="mt-4 max-w-xl text-sm md:text-base text-center md:text-left mx-auto md:mx-0 text-muted-foreground">
-              Aenean quis sagittis sem. Sed volutpat quam a imperdiet volutpat.
-              Quisque maximus nibh elit, nec molestie erat tincidunt sit amet.
-              Duis nec ante molestie, volutpat mi ac, convallis quam. Fusce
-              laoreet bibendum luctus. Maecenas malesuada fermentum mi.
+              Need to send a parcel urgently or have a question that needs
+              immediate attention? Our dedicated team is always ready to assist
+              you. Pick up the phone, and let us provide you with the fastest
+              possible solutions for all your delivery needs. Your satisfaction
+              is our priority, and quick support is just a call away.
             </p>
 
             <div className="mt-6 flex justify-center md:justify-start">
-              <Button className="px-6 py-3 rounded-md shadow-sm bg-amber-500 hover:bg-amber-600 text-white">
-                Call Us
-              </Button>
+              <Link to="/contact">
+                <Button className="px-6 py-3 rounded-md shadow-sm bg-amber-500 hover:bg-amber-600 text-white">
+                  Call Us
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

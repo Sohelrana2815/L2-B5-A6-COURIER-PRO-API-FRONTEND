@@ -1,6 +1,6 @@
 import RegisterForm from "@/components/modules/Authentication/RegisterForm";
 import { Link } from "react-router";
-import signupImg from "/src/assets/images/signup.png";
+import signupImg from "/src/assets/images/signup.webp";
 
 export default function Register() {
   return (

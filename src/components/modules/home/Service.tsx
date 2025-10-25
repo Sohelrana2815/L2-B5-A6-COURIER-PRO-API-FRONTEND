@@ -1,30 +1,31 @@
 import { Button } from "@/components/ui/button";
-import rider1 from "../../../assets/images/rider1.png";
-import rider2 from "../../../assets/images/rider2.png";
-import rider3 from "../../../assets/images/rider3.png";
-import rider4 from "../../../assets/images/rider4.png";
+import rider1 from "../../../assets/images/rider1.webp";
+import rider2 from "../../../assets/images/rider2.webp";
+import rider3 from "../../../assets/images/rider3.webp";
+import rider4 from "../../../assets/images/rider4.webp";
+import { Link } from "react-router";
 
 export default function Service() {
   const services = [
     {
       img: rider1,
-      title: "Swift Delivery",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      title: "Fast Shipping",
+      text: "We deliver your parcels swiftly and efficiently, meeting all your urgent needs.",
     },
     {
       img: rider2,
       title: "Trusted Service",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      text: "Count on us for dependable and secure deliveries, backed by our commitment to excellence.",
     },
     {
       img: rider3,
       title: "Vaccinated Courier",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      text: "Our delivery partners are fully vaccinated, prioritizing everyone's health and safety.",
     },
     {
       img: rider4,
       title: "Safety Protocol",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      text: "We adhere to strict safety guidelines to ensure a secure and hygienic delivery experience for all.",
     },
   ];
 
@@ -41,12 +42,14 @@ export default function Service() {
         </h2>
 
         <div className="mt-6">
-          <Button
-            size="lg"
-            className="  rounded-sm py-6 shadow-sm bg-amber-500 hover:bg-amber-600 text-white  "
-          >
-            Learn More
-          </Button>
+          <Link to="/about">
+            <Button
+              size="lg"
+              className="  rounded-sm py-6 shadow-sm bg-amber-500 hover:bg-amber-600 text-white  "
+            >
+              Learn More
+            </Button>
+          </Link>
         </div>
       </div>
       {/* white area below header with service items overlapping */}
@@ -66,7 +69,7 @@ export default function Service() {
                   loading="lazy"
                 />
 
-                <div  className="pt-1 pb-10">
+                <div className="pt-1 pb-10">
                   <h4 className="text-lg font-semibold text-foreground">
                     {s.title}
                   </h4>

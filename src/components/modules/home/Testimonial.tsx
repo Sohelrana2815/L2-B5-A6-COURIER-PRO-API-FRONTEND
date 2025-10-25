@@ -4,10 +4,10 @@ import { Star, Quote } from "lucide-react";
 // Import basic Swiper styles
 import "swiper/swiper.css";
 
-import rider1 from "../../../assets/images/rider1.png";
-import rider2 from "../../../assets/images/rider2.png";
-import rider3 from "../../../assets/images/rider3.png";
-import rider4 from "../../../assets/images/rider4.png";
+import rider1 from "../../../assets/images/rider1.webp";
+import rider2 from "../../../assets/images/rider2.webp";
+import rider3 from "../../../assets/images/rider3.webp";
+import rider4 from "../../../assets/images/rider4.webp";
 
 interface TestimonialData {
   id: number;

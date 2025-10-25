@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router";
 import { Home, ArrowLeft, Search } from "lucide-react";
-import notFoundImg from "../assets/images/404.jpg";
+import notFoundImg from "../assets/images/404.webp";
 
 export default function NotFound() {
   return (

@@ -186,6 +186,9 @@ export default function AllUsers() {
 
   return (
     <>
+      <h2 className="text-center  md:text-lg lg:text-xl ">
+        Our <span className="text-primary">Users: </span> {allUsers.length}
+      </h2>
       <Table>
         <TableCaption>A list of all users.</TableCaption>
         <TableHeader>
@@ -256,7 +259,11 @@ export default function AllUsers() {
                     size="sm"
                     className="cursor-pointer"
                   >
-                    {loadingUnblock.has(user._id) ? "Loading..." : <FaLockOpen />}
+                    {loadingUnblock.has(user._id) ? (
+                      "Loading..."
+                    ) : (
+                      <FaLockOpen />
+                    )}
                   </Button>
                 </TableCell>
                 {/* DELETE */}
@@ -267,7 +274,11 @@ export default function AllUsers() {
                     size="sm"
                     className="cursor-pointer"
                   >
-                    {loadingDelete.has(user._id) ? "Loading..." : <FaTrashCan />}
+                    {loadingDelete.has(user._id) ? (
+                      "Loading..."
+                    ) : (
+                      <FaTrashCan />
+                    )}
                   </Button>
                 </TableCell>
                 {/* RESTORE*/}
@@ -278,7 +289,11 @@ export default function AllUsers() {
                     className="cursor-pointer"
                     size="sm"
                   >
-                    {loadingRestore.has(user._id) ? "Loading..." : <MdRestore />}
+                    {loadingRestore.has(user._id) ? (
+                      "Loading..."
+                    ) : (
+                      <MdRestore />
+                    )}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -293,7 +308,8 @@ export default function AllUsers() {
           <DialogHeader>
             <DialogTitle>Block User</DialogTitle>
             <DialogDescription>
-              Are you sure you want to block {selectedUserName}? They will not be able to access their account.
+              Are you sure you want to block {selectedUserName}? They will not
+              be able to access their account.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -305,7 +321,9 @@ export default function AllUsers() {
               disabled={loadingBlock.has(selectedUserId || "")}
               className="bg-red-600 hover:bg-red-700"
             >
-              {loadingBlock.has(selectedUserId || "") ? "Blocking..." : "Block User"}
+              {loadingBlock.has(selectedUserId || "")
+                ? "Blocking..."
+                : "Block User"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -317,7 +335,8 @@ export default function AllUsers() {
           <DialogHeader>
             <DialogTitle>Delete User</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete {selectedUserName}? This action cannot be undone.
+              Are you sure you want to delete {selectedUserName}? This action
+              cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -329,7 +348,9 @@ export default function AllUsers() {
               disabled={loadingDelete.has(selectedUserId || "")}
               variant="destructive"
             >
-              {loadingDelete.has(selectedUserId || "") ? "Deleting..." : "Delete User"}
+              {loadingDelete.has(selectedUserId || "")
+                ? "Deleting..."
+                : "Delete User"}
             </Button>
           </DialogFooter>
         </DialogContent>

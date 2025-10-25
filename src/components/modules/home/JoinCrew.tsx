@@ -1,4 +1,4 @@
-import deliveryMan from "../../../assets/images/delivery-man.png";
+import deliveryMan from "../../../assets/images/delivery-man.webp";
 import { Button } from "@/components/ui/button";
 
 export default function JoinCrew() {
@@ -72,7 +72,7 @@ export default function JoinCrew() {
 
             <Button
               variant="outline"
-              className="border-white  hover:bg-white rounded-none hover:text-foreground px-8 py-3  text-secondary font-semibold text-lg transition-all duration-300"
+              className="border-white hover:bg-white rounded-none hover:text-foreground px-8 py-3  font-semibold text-lg transition-all duration-300"
             >
               Learn More
             </Button>

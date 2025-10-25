@@ -1,6 +1,6 @@
 import LoginForm from "@/components/modules/Authentication/LoginForm";
 import { Link } from "react-router";
-import loginImg from "/src/assets/images/login.png";
+import loginImg from "/src/assets/images/login.webp";
 
 export default function Login() {
   return (

@@ -1,6 +1,6 @@
-import item1 from "../../../assets/images/burg.png";
-import item2 from "../../../assets/images/box.png";
-import item3 from "../../../assets/images/gro.png";
+import item1 from "../../../assets/images/burg.webp";
+import item2 from "../../../assets/images/box.webp";
+import item3 from "../../../assets/images/gro.webp";
 import { Button } from "@/components/ui/button";
 
 export default function cDeliver() {
@@ -8,20 +8,20 @@ export default function cDeliver() {
     {
       img: item1,
       title: "Food And Drinks",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper.",
-      cta: "Order Now",
+      text: "Craving your favorite meal? We ensure piping hot food and chilled beverages arrive exactly as ordered. Our swift delivery network guarantees maximum freshness and timely service for every craving.",
+      cta: "Request Food Delivery",
     },
     {
       img: item2,
       title: "Packages",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper.",
-      cta: "Order Now",
+      text: "Need to send documents, online orders, or important gifts? Our reliable service handles all your packages, big or small. Track your shipment live and ensure secure delivery to any destination across the country.",
+      cta: "Create New Parcel",
     },
     {
       img: item3,
       title: "Groceries",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper.",
-      cta: "Order Now",
+      text: "Skip the store queues and let us bring your essentials. We deliver fresh produce, pantry staples, and household items safely and quickly right to your doorstep, keeping your kitchen stocked without hassle.",
+      cta: "Send Groceries",
     },
   ];
 
@@ -34,8 +34,8 @@ export default function cDeliver() {
             We Deliver <span className="text-primary">Everything</span>
           </h2>
           <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
-            tellus, luctus nec ullamcorper.
+            From small documents to large parcels, we handle it all with care
+            and guaranteed security.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export default function cDeliver() {
                 </p>
 
                 {/* Button */}
-                <Button className="w-full py-3 px-6 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors duration-300">
+                <Button className="w-full py-3 px-6 rounded-lg bg-primary hover:bg-primary/80 text-white font-medium transition-colors duration-300">
                   {card.cta}
                 </Button>
               </div>
