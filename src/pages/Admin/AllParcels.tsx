@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ParcelDetailsModal from "@/components/ParcelDetailsModal";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,15 +26,16 @@ import {
   useInTransitParcelMutation,
   useDeliverParcelMutation,
 } from "@/redux/features/parcel/parcel.api";
-import { EyeIcon } from "lucide-react";
+import { EyeIcon, Truck } from "lucide-react";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 interface ParcelData {
   _id: string;
   trackingId: string;
   currentStatus?: string;
-  senderId?: { name?: string };
-  receiverId?: { name?: string };
+  senderDetails?: { name?: string };
+  receiverDetails?: { name?: string };
   receiverInfo?: { city?: string };
   fee?: number;
   isBlocked?: boolean;
@@ -43,13 +44,15 @@ interface ParcelData {
 export default function AllParcels() {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10); // default limit
+  const [search, setSearch] = useState<string>(""); // search state
+  const [searchInput, setSearchInput] = useState<string>(""); // search input state
 
-  // Fetch parcels with page & limit
+  // Fetch parcels with page, limit, and search
   const {
     data: parcelsResponse,
     isLoading,
     isFetching,
-  } = useGetParcelsQuery({ page, limit });
+  } = useGetParcelsQuery({ search: search || undefined, page, limit });
 
   // Mutation hooks
   const [blockParcel] = useBlockParcelMutation();
@@ -78,13 +81,10 @@ export default function AllParcels() {
   const [selectedParcelId, setSelectedParcelId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Keep local page in sync if backend returns a different page number (optional)
+  // Keep search input in sync with search state
   useEffect(() => {
-    if (typeof meta.page === "number" && meta.page !== page) {
-      setPage(meta.page);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [meta.page]);
+    setSearchInput(search);
+  }, [search]);
 
   // Action handlers (block/unblock/pickup/in-transit/deliver)
   const handleBlockToggle = async (parcelId: string, isBlocked: boolean) => {
@@ -174,6 +174,23 @@ export default function AllParcels() {
     setSelectedParcelId(null);
   };
 
+  // Search handler - reset to page 1 when searching
+  const handleSearch = (searchTerm: string) => {
+    setSearch(searchTerm);
+    setPage(1); // Reset to first page when searching
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSearch(searchInput);
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput("");
+    setSearch("");
+    setPage(1);
+  };
+
   // Pagination controls
   const goPrev = () => setPage((p) => Math.max(1, p - 1));
   const goNext = () => setPage((p) => Math.min(totalPages, p + 1));
@@ -193,11 +210,30 @@ export default function AllParcels() {
     return Math.min(page * limit, total);
   }, [page, limit, total]);
 
-  if (isLoading) return <p>Loading parcels…</p>;
+  if (isLoading)
+    return (
+      <div className="flex items-center gap-4 justify-center">
+        <p>Loading analytics...</p>
+        <Truck className="text-xl text-primary" />
+      </div>
+    );
   if (!allParcels.length)
     return (
       <div>
         <p>No parcels found.</p>
+        {search && (
+          <p className="mt-2 text-sm text-gray-600">
+            No parcels match your search for "{search}". Try adjusting your
+            search terms or{" "}
+            <button
+              onClick={handleClearSearch}
+              className="text-blue-600 hover:text-blue-800 underline"
+            >
+              clear the search
+            </button>
+            .
+          </p>
+        )}
         {/* still allow changing limit/page if admin wants to try other pages */}
         <div className="mt-2 flex gap-2 items-center">
           <label>Per page:</label>
@@ -246,7 +282,27 @@ export default function AllParcels() {
             Next
           </Button>
         </div>
+        {/* Search parcel */}
 
+        <form
+          onSubmit={handleSearchSubmit}
+          className="flex w-full max-w-sm items-center gap-2"
+        >
+          <Input
+            type="text"
+            placeholder="Search by any field"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          <Button type="submit" variant="outline">
+            Search
+          </Button>
+          {search && (
+            <Button type="button" variant="outline" onClick={handleClearSearch}>
+              Clear
+            </Button>
+          )}
+        </form>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <label className="text-sm">Per page:</label>
@@ -301,8 +357,8 @@ export default function AllParcels() {
             <TableRow key={p._id}>
               <TableCell>{p.trackingId}</TableCell>
               <TableCell>{p.currentStatus ?? "—"}</TableCell>
-              <TableCell>{p.senderId?.name ?? "—"}</TableCell>
-              <TableCell>{p.receiverId?.name ?? "—"}</TableCell>
+              <TableCell>{p.senderDetails?.name ?? "—"}</TableCell>
+              <TableCell>{p.receiverDetails?.name ?? "—"}</TableCell>
               <TableCell>{p.receiverInfo?.city ?? "—"}</TableCell>
               <TableCell className="text-right">
                 {typeof p.fee === "number" ? p.fee.toFixed(2) : "—"}

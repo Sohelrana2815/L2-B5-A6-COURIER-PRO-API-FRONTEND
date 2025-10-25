@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { FcGoogle } from "react-icons/fc";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -57,68 +57,76 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex justify-center gap-4 w-md mx-auto  p-4">
-      {/* NAME */}
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 w-full"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-semibold">
+                Email Address
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your email address"
+                  type="email"
+                  className="h-12 text-lg rounded-lg"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-semibold">
+                Password
+              </FormLabel>
+              <FormControl>
+                <EyePassword
+                  {...field}
+                  placeholder="Enter your password"
+                  className="h-12 text-lg rounded-lg"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          className="w-full h-12 text-lg font-semibold bg-primary hover:bg-primary/80 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-lg cursor-pointer"
         >
-          {/*  EMAIL */}
+          Sign In
+        </Button>
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter your email"
-                    type="email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription className="sr-only">
-                  This is email
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <EyePassword {...field} placeholder="Password" />
-                </FormControl>
-                <FormDescription className="sr-only">
-                  This is Description
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
-
-          <p className="text-center">OR</p>
-          <Button
-            onClick={() => window.open(`${config.baseURL}/auth/google`)}
-            type="button"
-            variant="outline"
-            className="w-full"
-          >
-            Continue with Google
-          </Button>
-        </form>
-      </Form>
-    </div>
+        <Button
+          onClick={() => window.open(`${config.baseURL}/auth/google`)}
+          type="button"
+          variant="outline"
+          className="w-full h-12 text-lg font-semibold rounded-lg border-2 hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
+        >
+          <FcGoogle /> Continue with Google
+        </Button>
+      </form>
+    </Form>
   );
 }

@@ -27,6 +27,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Check } from "lucide-react";
+import { MdCancel } from "react-icons/md";
 
 interface Parcel {
   _id: string;
@@ -141,15 +143,13 @@ const IncomingParcels = () => {
             <TableHead className="text-right">weightKg</TableHead>
             <TableHead className="text-right">parcelType</TableHead>
             <TableHead className="text-right">fee</TableHead>
-            <TableHead className="text-right">Approve</TableHead>
-            <TableHead className="text-right">Decline</TableHead>
-            <TableHead className="text-right">Details</TableHead>
+            <TableHead className="text-center">Approve / Decline</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {parcels.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={9}>No parcels found</TableCell>
+              <TableCell colSpan={8}>No parcels found</TableCell>
             </TableRow>
           ) : (
             parcels.map((p: Parcel, idx: number) => (
@@ -163,30 +163,37 @@ const IncomingParcels = () => {
                 <TableCell className="text-right">{p.parcelType}</TableCell>
                 <TableCell className="text-right">{p.fee}</TableCell>
 
-                <TableCell className="text-right">
+                <TableCell className="text-center">
                   <Button
                     size="sm"
-                    onClick={() => handleApprove(p._id)}
+                    onClick={() => {
+                      if (
+                        p.currentStatus.toLowerCase().includes("approved") ||
+                        p.currentStatus.toLowerCase().includes("approve")
+                      ) {
+                        openDeclineDialog(p._id);
+                      } else {
+                        handleApprove(p._id);
+                      }
+                    }}
                     disabled={approvingId === p._id || decliningId === p._id}
-                    aria-busy={approvingId === p._id}
+                    aria-busy={approvingId === p._id || decliningId === p._id}
                   >
-                    {approvingId === p._id ? "Approving..." : "Approve"}
+                    {approvingId === p._id ? (
+                      "Processing..."
+                    ) : decliningId === p._id ? (
+                      "Processing..."
+                    ) : p.currentStatus.toLowerCase().includes("approved") ||
+                      p.currentStatus.toLowerCase().includes("approve") ? (
+                      <div className="flex items-center gap-x-1">
+                        <p>Decline</p> <MdCancel />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-x-1">
+                        <p>Approve</p> <Check />
+                      </div>
+                    )}
                   </Button>
-                </TableCell>
-
-                <TableCell className="text-right">
-                  <Button
-                    size="sm"
-                    onClick={() => openDeclineDialog(p._id)}
-                    disabled={decliningId === p._id || approvingId === p._id}
-                    aria-busy={decliningId === p._id}
-                  >
-                    {decliningId === p._id ? "Declining..." : "Decline"}
-                  </Button>
-                </TableCell>
-
-                <TableCell className="text-right">
-                  <Button size="sm">Details</Button>
                 </TableCell>
               </TableRow>
             ))

@@ -61,7 +61,7 @@ export default function Password({
         <div className="relative">
           <Input
             id={id}
-            className="pe-9"
+            className="pe-9 h-12 text-lg rounded-lg"
             type={isVisible ? "text" : "password"}
             value={value || ""}
             onChange={onChange}
@@ -69,7 +69,7 @@ export default function Password({
             {...field}
           />
           <button
-            className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground focus:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+            className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground focus:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
             type="button"
             onClick={toggleVisibility}
             aria-label={isVisible ? "Hide password" : "Show password"}

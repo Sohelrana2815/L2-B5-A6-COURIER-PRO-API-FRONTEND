@@ -45,3 +45,42 @@ export interface ParcelTrackingResponse {
   message: string;
   data: ParcelTrackingData;
 }
+
+export interface DailyTrend {
+  count: number;
+  date: string;
+  formattedDate: string;
+  percentage: number;
+  trend: string;
+}
+
+export interface MostActiveDay {
+  count: number;
+  date: string;
+  formattedDate: string;
+}
+
+export interface ParcelTrendsSummary {
+  totalRequests: number;
+  averagePerDay: number;
+  mostActiveDay: MostActiveDay;
+  period: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ParcelTrendsData {
+  summary: ParcelTrendsSummary;
+  dailyTrends: DailyTrend[];
+  trends: {
+    last7Days: DailyTrend[];
+    last30Days: null;
+  };
+}
+
+export interface ParcelTrendsResponse {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: ParcelTrendsData;
+}

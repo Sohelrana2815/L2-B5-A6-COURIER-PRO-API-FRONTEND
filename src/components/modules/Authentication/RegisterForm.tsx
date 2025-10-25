@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -81,123 +80,121 @@ export default function RegisterForm() {
     }
   };
   return (
-    <div className="flex justify-center gap-4 w-md mx-auto  p-4">
-      {/* NAME */}
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 w-full"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-semibold">
+                Full Name
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your full name"
+                  className="h-12 text-lg rounded-lg"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-semibold">
+                Email Address
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your email address"
+                  type="email"
+                  className="h-12 text-lg rounded-lg"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-semibold">
+                Password
+              </FormLabel>
+              <FormControl>
+                <Password
+                  {...field}
+                  placeholder="Create a secure password"
+                  className="h-12 text-lg rounded-lg"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-semibold">
+                Confirm Password
+              </FormLabel>
+              <FormControl>
+                <EyePassword
+                  {...field}
+                  placeholder="Confirm your password"
+                  className="h-12 text-lg rounded-lg"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-semibold">
+                Account Type
+              </FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger className="w-full h-12 text-lg rounded-lg">
+                  <SelectValue placeholder="Select your account type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Choose your role</SelectLabel>
+                    <SelectItem value="SENDER">📦 Sender</SelectItem>
+                    <SelectItem value="RECEIVER">📬 Receiver</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          className="w-full h-12 text-lg font-semibold bg-primary hover:bg-primary/80 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-lg cursor-pointer"
         >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your name" {...field} />
-                </FormControl>
-                <FormDescription className="sr-only">
-                  This is Name FIeld
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/*  EMAIL */}
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter your email"
-                    type="email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription className="sr-only">
-                  This is email field
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/*  PASSWORD */}
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Password {...field} placeholder="Enter your Password" />
-                </FormControl>
-                <FormDescription className="sr-only">
-                  This is password field
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/*  CONFIRM PASSWORD */}
-
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <EyePassword {...field} placeholder="Confirm Password" />
-                </FormControl>
-                <FormDescription className="sr-only">
-                  This is Confirm Password field
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/*  ROLE */}
-
-          <FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Role</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select your role" />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Available Roles</SelectLabel>
-                      <SelectItem value="SENDER">Sender</SelectItem>
-                      <SelectItem value="RECEIVER">Receiver</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-
-          <Button type="submit" className="w-full">
-            Register
-          </Button>
-        </form>
-      </Form>
-    </div>
+          Create Account
+        </Button>
+      </form>
+    </Form>
   );
 }

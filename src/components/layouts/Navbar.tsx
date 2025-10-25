@@ -1,5 +1,5 @@
-import Logo from "@/assets/icons/Logo";
 import { Button } from "@/components/ui/button";
+import { Truck } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -20,19 +20,21 @@ import {
 } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hooks";
 import { role } from "@/constants/role";
+import Logo from "@/components/icons/Logo";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC", active: true },
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/track-parcel", label: "Track Parcel", role: "PUBLIC" },
+  { href: "/contact", label: "Contact Us", role: "PUBLIC" },
   { href: "/admin", label: "Admin Dashboard", role: role.admin },
   { href: "/sender", label: "Sender Dashboard", role: role.sender },
   { href: "/receiver", label: "Receiver Dashboard", role: role.receiver },
 ];
 
 export default function Navbar() {
-  const { data } = useUserInfoQuery(undefined);
+  const { data, isLoading: userLoading } = useUserInfoQuery(undefined);
   const [logout, { isLoading }] = useLogoutMutation();
   const dispatch = useAppDispatch();
 
@@ -57,6 +59,14 @@ export default function Navbar() {
       console.error("Logout failed:", error);
     }
   };
+
+  if (userLoading)
+    return (
+      <div className="flex items-center justify-center mt-10 gap-4">
+        <p>Loading</p>
+        <Truck className="text-primary text-lg" />
+      </div>
+    );
 
   return (
     <header className="border-b">

@@ -130,14 +130,47 @@ export const parcelApi = baseApi.injectEndpoints({
     getParcels: builder.query({
       // accepts optional object { page, limit }
       query: (
-        args: { page?: number; limit?: number } = { page: 1, limit: 10 }
+        args: { search?: string; page?: number; limit?: number } = {
+          page: 1,
+          limit: 10,
+        }
       ) => ({
-        url: `/parcel/admin/all-parcels?page=${args.page}&limit=${args.limit}`,
+        url: `/parcel/admin/all-parcels?${args.search ? `search=${encodeURIComponent(args.search)}&` : ''}page=${args.page}&limit=${args.limit}`,
         method: "GET",
       }),
       providesTags: ["parcel"],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: any) => response, // return full payload (data + meta)
+    }),
+
+    // ADMIN DASHBOARD OVERVIEW
+
+    getParcelsOverview: builder.query({
+      query: () => ({
+        url: "/parcel/admin/dashboard-overview",
+        method: "GET",
+      }),
+      providesTags: ["parcel"],
+    }),
+    // ADMIN ULTIMATE CURRENT STATUS COUNTS (ANALYTICS)
+
+    getCurrentStatusCounts: builder.query({
+      query: () => ({
+        url: "/parcel/admin/final-status-counts",
+        method: "GET",
+      }),
+      providesTags: ["parcel"],
+    }),
+
+    // PARCEL TRENDS
+
+    getParcelTrends: builder.query({
+      query: () => ({
+        url: "/parcel/admin/parcel-trends",
+        method: "GET",
+      }),
+      providesTags: ["parcel"],
+      transformResponse: (response) => response.data,
     }),
 
     // ADMIN ONLY BLOCK USER
@@ -262,4 +295,7 @@ export const {
   useInTransitParcelMutation,
   useDeliverParcelMutation,
   useTrackParcelQuery,
+  useGetParcelsOverviewQuery,
+  useGetCurrentStatusCountsQuery,
+  useGetParcelTrendsQuery,
 } = parcelApi;

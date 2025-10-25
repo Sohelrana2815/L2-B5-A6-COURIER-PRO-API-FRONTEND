@@ -161,7 +161,7 @@ export default function DeliveryHistory() {
 
     return (
       <div className="space-y-3">
-        <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+        <div className="flex items-center gap-2 text-sm font-medium text-foreground mb-3">
           <MapPin className="h-4 w-4" />
           Status Timeline
         </div>
@@ -204,7 +204,7 @@ export default function DeliveryHistory() {
     return (
       <div className="container mx-auto p-6 space-y-6">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             Delivery History
           </h1>
           <p className="text-gray-600">Track your received parcels</p>
@@ -253,10 +253,10 @@ export default function DeliveryHistory() {
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
           Delivery History
         </h1>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           {totalDeliveries > 0
             ? `You've received ${totalDeliveries} parcel${
                 totalDeliveries !== 1 ? "s" : ""
@@ -269,7 +269,7 @@ export default function DeliveryHistory() {
       {parcelsDeliveryHistoryData.length === 0 ? (
         <Card className="max-w-md mx-auto text-center py-12">
           <CardContent>
-            <Package className="h-16 w-16 mx-auto text-gray-400 mb-4" />
+            <Package className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <CardTitle className="mb-2">No Delivery History</CardTitle>
             <CardDescription>
               You haven't received any parcels yet. Your delivery history will
@@ -288,7 +288,7 @@ export default function DeliveryHistory() {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
-                    <Truck className="h-5 w-5 text-blue-600" />
+                    <Truck className="h-5 w-5 text-primary" />
                     <CardTitle className="text-lg font-semibold">
                       {item.trackingId}
                     </CardTitle>
@@ -297,7 +297,7 @@ export default function DeliveryHistory() {
                     {item.currentStatus.replace("_", " ")}
                   </Badge>
                 </div>
-                <CardDescription className="text-sm text-gray-600">
+                <CardDescription className="text-sm text-muted-foreground">
                   {item.statusHistory.length > 0
                     ? `Last updated ${formatDate(item.lastUpdatedAt)}`
                     : `Delivered ${formatDate(item.lastUpdatedAt)}`}
@@ -308,28 +308,36 @@ export default function DeliveryHistory() {
                 {/* Basic Info */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <User className="h-4 w-4 text-gray-500" />
+                    <User className="h-4 w-4 text-chart-3" />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">From</p>
-                      <p className="text-sm text-gray-600">{item.senderName}</p>
+                      <p className="text-sm font-medium text-muted-foreground">
+                        From
+                      </p>
+                      <p className="text-sm text-foreground">
+                        {item.senderName}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <Package className="h-4 w-4 text-gray-500" />
+                    <Package className="h-4 w-4 text-chart-4" />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Type</p>
-                      <p className="text-sm text-gray-600">{item.parcelType}</p>
+                      <p className="text-sm font-medium text-muted-foreground">
+                        Type
+                      </p>
+                      <p className="text-sm text-foreground">
+                        {item.parcelType}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <DollarSign className="h-4 w-4 text-gray-500" />
+                    <DollarSign className="h-4 w-4 text-chart-2" />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-muted-foreground">
                         Delivery Fee
                       </p>
-                      <p className="text-sm text-gray-600">${item.fee}</p>
+                      <p className="text-sm text-foreground">${item.fee}</p>
                     </div>
                   </div>
                 </div>
@@ -338,13 +346,13 @@ export default function DeliveryHistory() {
                 {item.statusHistory.length > 0 && (
                   <div className="border-t pt-4">
                     <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                        <MapPin className="h-4 w-4" />
+                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                        <MapPin className="h-4 w-4 text-chart-1" />
                         Status Timeline ({item.statusHistory.length} updates)
                       </div>
                       <button
                         onClick={() => toggleCardExpansion(item.trackingId)}
-                        className="text-sm text-blue-600 hover:text-blue-800"
+                        className="text-sm text-chart-3 hover:text-chart-3/80"
                       >
                         {expandedCards.has(item.trackingId) ? "Hide" : "Show"}{" "}
                         Details

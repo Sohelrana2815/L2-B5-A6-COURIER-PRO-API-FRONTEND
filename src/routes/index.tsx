@@ -13,6 +13,9 @@ import { role, type TRole } from "@/constants/role";
 import { receiverSidebarItems } from "./receiverSidebarItems";
 import CreateParcel from "@/pages/Sender/CreateParcel";
 import { TrackParcel } from "@/pages/public/TrackParcel";
+import Home from "@/pages/Home";
+import Contact from "@/pages/Contact";
+import NotFound from "@/pages/NotFound";
 
 const router = createBrowserRouter([
   // Common layout
@@ -21,8 +24,16 @@ const router = createBrowserRouter([
     Component: App,
     children: [
       {
+        path: "/",
+        Component: Home,
+      },
+      {
         path: "about",
         Component: withAuth(About),
+      },
+      {
+        path: "contact",
+        Component: withAuth(Contact),
       },
       {
         path: "track-parcel",
@@ -33,6 +44,7 @@ const router = createBrowserRouter([
         Component: TrackParcel,
       },
     ],
+    errorElement: <NotFound />,
   },
   // Admin layout
   {

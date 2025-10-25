@@ -1,8 +1,19 @@
 import AllReceivers from "@/pages/Sender/AllReceivers";
 import CreatedParcels from "@/pages/Sender/CreatedParcels";
 import type { ISidebarItems } from "@/types";
+import Home from "@/pages/Home";
 
 export const senderSidebarItems: ISidebarItems[] = [
+  {
+    title: "Navigation",
+    items: [
+      {
+        title: "Home",
+        url: "/",
+        component: Home,
+      },
+    ],
+  },
   {
     title: "Sender Dashboard",
     items: [

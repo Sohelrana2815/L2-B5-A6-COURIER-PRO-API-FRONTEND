@@ -1,8 +1,8 @@
-import Logo from "@/assets/icons/Logo";
+import Logo from "@/components/icons/Logo";
 
 export default function Footer() {
   return (
-    <footer className="border-t">
+    <footer className="border-t bg-card">
       <div className="mx-auto container space-y-8 px-4 py-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
@@ -21,7 +21,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:opacity-75"
                 >
                   <span className="sr-only">Facebook</span>
 
@@ -45,7 +45,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:opacity-75"
                 >
                   <span className="sr-only">Instagram</span>
 
@@ -69,7 +69,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:opacity-75"
                 >
                   <span className="sr-only">Twitter</span>
 
@@ -89,7 +89,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:opacity-75"
                 >
                   <span className="sr-only">GitHub</span>
 
@@ -113,7 +113,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:opacity-75"
                 >
                   <span className="sr-only">Dribbble</span>
 
@@ -136,13 +136,13 @@ export default function Footer() {
 
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
             <div>
-              <p className="font-medium text-gray-900">Services</p>
+              <p className="font-medium text-foreground">Services</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     1on1 Coaching{" "}
@@ -152,7 +152,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Company Review{" "}
@@ -162,7 +162,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Accounts Review{" "}
@@ -172,7 +172,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     HR Consulting{" "}
@@ -182,7 +182,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     SEO Optimisation{" "}
@@ -192,13 +192,13 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="font-medium text-gray-900">Company</p>
+              <p className="font-medium text-foreground">Company</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     About{" "}
@@ -208,7 +208,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Meet the Team{" "}
@@ -218,7 +218,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Accounts Review{" "}
@@ -228,13 +228,13 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="font-medium text-gray-900">Helpful Links</p>
+              <p className="font-medium text-foreground">Helpful Links</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Contact{" "}
@@ -244,7 +244,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     FAQs{" "}
@@ -254,7 +254,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Live Chat{" "}
@@ -270,7 +270,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Accessibility{" "}
@@ -280,7 +280,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Returns Policy{" "}
@@ -290,7 +290,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     {" "}
                     Refund Policy{" "}
@@ -300,7 +300,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/70 transition hover:opacity-75"
                   >
                     Hiring-3 Statistics
                   </a>
@@ -310,7 +310,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-foreground/65">
           &copy; 2022. Company Name. All rights reserved.
         </p>
       </div>
