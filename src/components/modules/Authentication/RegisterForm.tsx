@@ -60,7 +60,7 @@ export default function RegisterForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-    console.log(data);
+    // console.log(data);
     const userData = {
       name: data.name,
       email: data.email,
@@ -69,7 +69,7 @@ export default function RegisterForm() {
     };
     try {
       const result = await register(userData).unwrap();
-      console.log(result);
+      // console.log(result);
       if (result?.success) {
         form.reset();
         toast.success("Registration successful! Please login.");

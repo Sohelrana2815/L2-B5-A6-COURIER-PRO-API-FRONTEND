@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import ParcelDetailsModal from "@/components/ParcelDetailsModal";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,9 +26,10 @@ import {
   useInTransitParcelMutation,
   useDeliverParcelMutation,
 } from "@/redux/features/parcel/parcel.api";
-import { EyeIcon, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, EyeIcon, Truck } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface ParcelData {
   _id: string;
@@ -199,17 +200,6 @@ export default function AllParcels() {
     setPage(1); // reset to first page when limit changes
   };
 
-  // derived text for UI
-  const showingFrom = useMemo(() => {
-    if (!total) return 0;
-    return (page - 1) * limit + 1;
-  }, [page, limit, total]);
-
-  const showingTo = useMemo(() => {
-    if (!total) return 0;
-    return Math.min(page * limit, total);
-  }, [page, limit, total]);
-
   if (isLoading)
     return (
       <div className="flex items-center gap-4 justify-center">
@@ -234,24 +224,6 @@ export default function AllParcels() {
             .
           </p>
         )}
-        {/* still allow changing limit/page if admin wants to try other pages */}
-        <div className="mt-2 flex gap-2 items-center">
-          <label>Per page:</label>
-          <Select
-            value={limit.toString()}
-            onValueChange={(value) => handleLimitChange(Number(value))}
-          >
-            <SelectTrigger className="w-20">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="5">5</SelectItem>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
       </div>
     );
 
@@ -259,29 +231,6 @@ export default function AllParcels() {
     <div className="w-full">
       {/* Top pagination controls */}
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            onClick={goPrev}
-            disabled={page <= 1 || isFetching}
-            className="px-3 py-1"
-          >
-            Prev
-          </Button>
-
-          <span className="text-sm">
-            Page {page} of {totalPages}
-          </span>
-
-          <Button
-            size="sm"
-            onClick={goNext}
-            disabled={page >= totalPages || isFetching}
-            className="px-3 py-1"
-          >
-            Next
-          </Button>
-        </div>
         {/* Search parcel */}
 
         <form
@@ -290,7 +239,7 @@ export default function AllParcels() {
         >
           <Input
             type="text"
-            placeholder="Search by any field"
+            placeholder="Search by most field"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
@@ -303,29 +252,6 @@ export default function AllParcels() {
             </Button>
           )}
         </form>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <label className="text-sm">Per page:</label>
-            <Select
-              value={limit.toString()}
-              onValueChange={(value) => handleLimitChange(Number(value))}
-            >
-              <SelectTrigger className="w-20">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="5">5</SelectItem>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="20">20</SelectItem>
-                <SelectItem value="50">50</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="text-sm">
-            Showing {showingFrom}–{showingTo} of {total}
-          </div>
-        </div>
       </div>
 
       <Table>
@@ -402,44 +328,33 @@ export default function AllParcels() {
 
               <TableCell className="text-center">
                 <div className="inline-flex gap-2">
+                  {/* Picked up */}
                   <Button
                     size="sm"
                     onClick={() => handlePickupParcel(p._id)}
                     disabled={
                       loadingParcels.has(p._id) ||
-                      p.currentStatus === "PICKED_UP" ||
-                      p.currentStatus === "IN_TRANSIT" ||
-                      p.currentStatus === "DELIVERED" ||
-                      p.currentStatus === "CANCELLED" ||
-                      p.currentStatus === "RETURNED" ||
-                      p.currentStatus === "ON_HOLD" ||
-                      p.currentStatus === "REQUESTED"
+                      p.currentStatus !== "APPROVED"
                     }
                     type="button"
                     className="px-2 py-1 rounded border text-sm cursor-pointer"
                   >
                     {loadingParcels.has(p._id) ? "Loading..." : "Picked up"}
                   </Button>
-
+                  {/* In transit */}
                   <Button
                     size="sm"
                     onClick={() => handleInTransitParcel(p._id)}
                     disabled={
                       loadingParcels.has(p._id) ||
-                      p.currentStatus === "IN_TRANSIT" ||
-                      p.currentStatus === "DELIVERED" ||
-                      p.currentStatus === "CANCELLED" ||
-                      p.currentStatus === "RETURNED" ||
-                      p.currentStatus === "ON_HOLD" ||
-                      p.currentStatus === "REQUESTED" ||
-                      p.currentStatus === "APPROVED"
+                      p.currentStatus !== "PICKED_UP"
                     }
                     type="button"
                     className="px-2 py-1 rounded border text-sm cursor-pointer"
                   >
                     {loadingParcels.has(p._id) ? "Loading..." : "In transit"}
                   </Button>
-
+                  {/* Delivered */}
                   <Button
                     type="button"
                     size="sm"
@@ -470,27 +385,45 @@ export default function AllParcels() {
       </Table>
 
       {/* Bottom pagination controls */}
-      <div className="mt-4 flex items-center justify-between">
-        <div className="text-sm">
-          Page {page} of {totalPages}
-        </div>
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4 justify-end mr-20">
+        <div className="flex items-center gap-4">
           <Button
             size="sm"
             onClick={goPrev}
             disabled={page <= 1 || isFetching}
-            className="px-3 py-1"
+            className="rounded-xs"
           >
-            Prev
+            <ArrowLeft /> Prev
           </Button>
+          <span className="text-sm">
+            Page {page} of {totalPages}
+          </span>
           <Button
             size="sm"
             onClick={goNext}
             disabled={page >= totalPages || isFetching}
-            className="px-3 py-1"
+            className="rounded-xs"
           >
-            Next
+            Next <ArrowRight />
           </Button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Label>Rows per page:</Label>
+          <Select
+            value={limit.toString()}
+            onValueChange={(value) => handleLimitChange(Number(value))}
+          >
+            <SelectTrigger className="w-[90px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>

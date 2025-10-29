@@ -21,7 +21,7 @@ import {
   useUnblockUserMutation,
 } from "@/redux/features/parcel/parcel.api";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -30,6 +30,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ArrowLeft, ArrowRight, Truck } from "lucide-react";
+
+/* shadcn Select components */
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface IUser {
   _id: string;
@@ -57,14 +67,41 @@ function formatDate(date?: string | number) {
 }
 
 export default function AllUsers() {
-  // provide a typed default (so .map never runs on undefined)
-  const {
-    data: allUsers = [],
-    isLoading,
-    isError,
-  } = useGetUsersQuery(undefined);
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
 
-  // block/unblock mutation
+  // Filter states (string-backed selects):
+  // blockValue: "all" | "true" | "false"
+  const [blockValue, setBlockValue] = useState<string>("all");
+  const [deletedValue, setDeletedValue] = useState<string>("all");
+  // roleValue: "all" | "SENDER" | "RECEIVER" | "ADMIN"
+  const [roleValue, setRoleValue] = useState<string>("all");
+  // sortValue: "new" | "old"
+  const [sortValue, setSortValue] = useState<"new" | "old">("new");
+
+  // Convert string select values to the types expected by API call
+  const selectedIsBlocked: boolean | undefined =
+    blockValue === "all" ? undefined : blockValue === "true";
+  const selectedIsDeleted: boolean | undefined =
+    deletedValue === "all" ? undefined : deletedValue === "true";
+  const selectedRole: string | undefined =
+    roleValue === "all" ? undefined : roleValue;
+  const selectedSort = sortValue;
+
+  // fetch users for current page, limit & filters
+  const { data, isLoading, isFetching, error } = useGetUsersQuery({
+    page,
+    limit,
+    isBlocked: selectedIsBlocked,
+    isDeleted: selectedIsDeleted,
+    role: selectedRole,
+    sort: selectedSort,
+  });
+
+  const users = data?.data ?? [];
+  const meta = data?.meta;
+
+  // mutations
   const [blockUser] = useBlockUserMutation();
   const [unblockUser] = useUnblockUserMutation();
   const [deleteUser] = useDeleteUserMutation();
@@ -106,7 +143,7 @@ export default function AllUsers() {
     } finally {
       setLoadingBlock((prev) => {
         const newSet = new Set(prev);
-        newSet.delete(selectedUserId);
+        newSet.delete(selectedUserId as string);
         return newSet;
       });
     }
@@ -155,7 +192,7 @@ export default function AllUsers() {
     } finally {
       setLoadingDelete((prev) => {
         const newSet = new Set(prev);
-        newSet.delete(selectedUserId);
+        newSet.delete(selectedUserId as string);
         return newSet;
       });
     }
@@ -180,17 +217,138 @@ export default function AllUsers() {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Failed to load users.</p>;
-  if (allUsers.length === 0) return <p>No users found.</p>;
+  // Handle prev/next page
+  const handlePrev = () => {
+    setPage((p) => Math.max(1, p - 1));
+  };
+  const handleNext = () => {
+    setPage((p) => (meta ? Math.min(meta.totalPages, p + 1) : p + 1));
+  };
+
+  // clamp page if server says fewer pages after changing limit or data changes
+  useEffect(() => {
+    if (meta && page > meta.totalPages) {
+      setPage(meta.totalPages || 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meta?.totalPages]);
+
+  // When limit changes, reset page
+  const handleLimitChange = (value: string) => {
+    const newLimit = Number(value) || 10;
+    setLimit(newLimit);
+    setPage(1);
+  };
+
+  // Filter change handlers (reset to page 1)
+  const handleBlockChange = (val: string) => {
+    setBlockValue(val);
+    setPage(1);
+  };
+  const handleDeletedChange = (val: string) => {
+    setDeletedValue(val);
+    setPage(1);
+  };
+  const handleRoleChange = (val: string) => {
+    setRoleValue(val);
+    setPage(1);
+  };
+  const handleSortChange = (val: "new" | "old") => {
+    setSortValue(val);
+    setPage(1);
+  };
+
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-lg text-muted-foreground flex items-center gap-4">
+          <p>Loading analytics...</p>
+          <Truck className="text-xl text-primary" />
+        </div>
+      </div>
+    );
+  if (error) return <p>Failed to load users.</p>;
 
   return (
     <>
-      <h2 className="text-center  md:text-lg lg:text-xl ">
-        Our <span className="text-primary">Users: </span> {allUsers.length}
-      </h2>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
+        <div className="text-center text-xl">
+          {isFetching ? "Refreshing..." : `Total users: ${meta?.total ?? "-"}`}
+        </div>
+
+        {/* Filters area */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Block status */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm">Blocked</label>
+            <Select defaultValue={blockValue} onValueChange={handleBlockChange}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="true">Blocked</SelectItem>
+                <SelectItem value="false">Unblocked</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Deleted status */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm">Deleted</label>
+            <Select
+              defaultValue={deletedValue}
+              onValueChange={handleDeletedChange}
+            >
+              <SelectTrigger className="w-[120px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="true">Deleted</SelectItem>
+                <SelectItem value="false">Active</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Role */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm">Role</label>
+            <Select defaultValue={roleValue} onValueChange={handleRoleChange}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="SENDER">SENDER</SelectItem>
+                <SelectItem value="RECEIVER">RECEIVER</SelectItem>
+                <SelectItem value="ADMIN">ADMIN</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Sort */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm">Sort</label>
+            <Select
+              defaultValue={sortValue}
+              onValueChange={(v) => handleSortChange(v as "new" | "old")}
+            >
+              <SelectTrigger className="w-[100px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="new">New</SelectItem>
+                <SelectItem value="old">Old</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
       <Table>
         <TableCaption>A list of all users.</TableCaption>
+
         <TableHeader>
           <TableRow>
             <TableHead className="text-center">Display Name</TableHead>
@@ -213,92 +371,114 @@ export default function AllUsers() {
         </TableHeader>
 
         <TableBody>
-          {allUsers.map((user: IUser) => {
-            const id = user._id;
-            const displayName = user.name || user.email.split("@")[0] || "—";
-            const isDeleted = Boolean(user.isDeleted);
-            const accountStatus = user.accountStatus || "—";
-            const createdAt = formatDate(user.createdAt);
-            const isBlocked = Boolean(user.isBlocked);
-            const role = user.role || "user";
-            const isVerified = Boolean(user.isVerified);
+          {users.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={11} className="text-center py-6">
+                No users found.
+              </TableCell>
+            </TableRow>
+          ) : (
+            users.map((user: IUser) => {
+              const id = user._id;
+              const displayName = user.name || user.email.split("@")[0] || "—";
+              const isDeleted = Boolean(user.isDeleted);
+              const accountStatus = user.accountStatus || "—";
+              const createdAt = formatDate(user.createdAt);
+              const isBlocked = Boolean(user.isBlocked);
+              const role = user.role || "user";
+              const isVerified = Boolean(user.isVerified);
 
-            return (
-              <TableRow key={id}>
-                <TableCell className="font-medium text-center">
-                  {displayName}
-                </TableCell>
-                <TableCell className="text-center">
-                  {isDeleted ? "Yes" : "No"}
-                </TableCell>
-                <TableCell className="text-center">{accountStatus}</TableCell>
-                <TableCell className="text-center">{createdAt}</TableCell>
-                <TableCell className="text-center">
-                  {isBlocked ? "Blocked" : "Not blocked"}
-                </TableCell>
-                <TableCell className="text-center capitalize">{role}</TableCell>
-                <TableCell className="text-center">
-                  {isVerified ? "Yes" : "No"}
-                </TableCell>
-                {/* BLOCK */}
-                <TableCell className="text-center cursor-pointer">
-                  <Button
-                    disabled={user.isBlocked || loadingBlock.has(user._id)}
-                    size="sm"
-                    onClick={() => openBlockModal(user._id, displayName)}
-                    className="cursor-pointer"
-                  >
-                    {loadingBlock.has(user._id) ? "Loading..." : <ImBlocked />}
-                  </Button>
-                </TableCell>
-                {/* UNBLOCK */}
-                <TableCell className="text-center">
-                  <Button
-                    disabled={!user.isBlocked || loadingUnblock.has(user._id)}
-                    onClick={() => handleUnblockUser(user._id)}
-                    size="sm"
-                    className="cursor-pointer"
-                  >
-                    {loadingUnblock.has(user._id) ? (
-                      "Loading..."
-                    ) : (
-                      <FaLockOpen />
-                    )}
-                  </Button>
-                </TableCell>
-                {/* DELETE */}
-                <TableCell className="text-center">
-                  <Button
-                    disabled={user.isDeleted || loadingDelete.has(user._id)}
-                    onClick={() => openDeleteModal(user._id, displayName)}
-                    size="sm"
-                    className="cursor-pointer"
-                  >
-                    {loadingDelete.has(user._id) ? (
-                      "Loading..."
-                    ) : (
-                      <FaTrashCan />
-                    )}
-                  </Button>
-                </TableCell>
-                {/* RESTORE*/}
-                <TableCell className="text-center">
-                  <Button
-                    disabled={!user.isDeleted || loadingRestore.has(user._id)}
-                    onClick={() => handleRestoreUser(user._id)}
-                    className="cursor-pointer"
-                    size="sm"
-                  >
-                    {loadingRestore.has(user._id) ? (
-                      "Loading..."
-                    ) : (
-                      <MdRestore />
-                    )}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+              return (
+                <TableRow key={id}>
+                  <TableCell className="font-medium text-center">
+                    {displayName}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {isDeleted ? "Yes" : "No"}
+                  </TableCell>
+                  <TableCell className="text-center">{accountStatus}</TableCell>
+                  <TableCell className="text-center">{createdAt}</TableCell>
+                  <TableCell className="text-center">
+                    {isBlocked ? "Blocked" : "Not blocked"}
+                  </TableCell>
+                  <TableCell className="text-center capitalize">
+                    {role}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {isVerified ? "Yes" : "No"}
+                  </TableCell>
+                  {/* BLOCK */}
+                  <TableCell className="text-center cursor-pointer">
+                    <Button
+                      disabled={
+                        user.isBlocked ||
+                        loadingBlock.has(user._id) ||
+                        user.role === "ADMIN"
+                      }
+                      size="sm"
+                      onClick={() => openBlockModal(user._id, displayName)}
+                      className="cursor-pointer"
+                    >
+                      {loadingBlock.has(user._id) ? (
+                        "Loading..."
+                      ) : (
+                        <ImBlocked />
+                      )}
+                    </Button>
+                  </TableCell>
+                  {/* UNBLOCK */}
+                  <TableCell className="text-center">
+                    <Button
+                      disabled={!user.isBlocked || loadingUnblock.has(user._id)}
+                      onClick={() => handleUnblockUser(user._id)}
+                      size="sm"
+                      className="cursor-pointer"
+                    >
+                      {loadingUnblock.has(user._id) ? (
+                        "Loading..."
+                      ) : (
+                        <FaLockOpen />
+                      )}
+                    </Button>
+                  </TableCell>
+                  {/* DELETE */}
+                  <TableCell className="text-center">
+                    <Button
+                      disabled={
+                        user.isDeleted ||
+                        loadingDelete.has(user._id) ||
+                        user.role === "ADMIN"
+                      }
+                      onClick={() => openDeleteModal(user._id, displayName)}
+                      size="sm"
+                      className="cursor-pointer"
+                    >
+                      {loadingDelete.has(user._id) ? (
+                        "Loading..."
+                      ) : (
+                        <FaTrashCan />
+                      )}
+                    </Button>
+                  </TableCell>
+                  {/* RESTORE*/}
+                  <TableCell className="text-center">
+                    <Button
+                      disabled={!user.isDeleted || loadingRestore.has(user._id)}
+                      onClick={() => handleRestoreUser(user._id)}
+                      className="cursor-pointer"
+                      size="sm"
+                    >
+                      {loadingRestore.has(user._id) ? (
+                        "Loading..."
+                      ) : (
+                        <MdRestore />
+                      )}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          )}
         </TableBody>
       </Table>
 
@@ -355,6 +535,55 @@ export default function AllUsers() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Pagination controls */}
+      <div className="flex justify-end gap-4 mr-20 mt-4">
+        <div className="flex text-center gap-2 items-center">
+          <Button
+            onClick={handlePrev}
+            disabled={page === 1 || isFetching}
+            size="sm"
+            className="rounded-xs"
+          >
+            <ArrowLeft /> Prev
+          </Button>
+
+          <span className="px-2">
+            {meta ? `Page ${meta.page} of ${meta.totalPages}` : `page ${page}`}
+          </span>
+
+          <Button
+            onClick={handleNext}
+            disabled={meta ? page >= meta.totalPages || isFetching : isFetching}
+            size="sm"
+            className="rounded-xs"
+          >
+            Next <ArrowRight />
+          </Button>
+        </div>
+
+        {/* shadcn Select for page size */}
+        <div className="flex items-center gap-2 ">
+          <label htmlFor="pageSizeSelect" className="text-sm">
+            Rows per page
+          </label>
+
+          <Select
+            defaultValue={String(limit)}
+            onValueChange={handleLimitChange}
+          >
+            <SelectTrigger id="pageSizeSelect" className="w-[96px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
     </>
   );
 }

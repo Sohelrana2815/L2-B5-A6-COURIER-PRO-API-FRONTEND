@@ -107,7 +107,7 @@ export default function CreateParcel() {
 
     try {
       const result = await createParcel(parcelData).unwrap();
-      console.log(result);
+      // console.log(result);
       if (result?.success) {
         toast.success("Parcel created successfully!");
         navigate("/sender/created-parcels");
@@ -116,7 +116,7 @@ export default function CreateParcel() {
       console.error(error);
     }
 
-    console.log(parcelData);
+    // console.log(parcelData);
   };
 
   return (

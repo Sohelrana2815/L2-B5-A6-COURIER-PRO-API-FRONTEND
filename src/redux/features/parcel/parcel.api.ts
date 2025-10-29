@@ -117,12 +117,45 @@ export const parcelApi = baseApi.injectEndpoints({
     // GET ALL USERS ADMIN ONLY
 
     getUsers: builder.query({
-      query: () => ({
-        url: "/user/all-users",
-        method: "GET",
-      }),
+      query: (
+        args: {
+          page?: number;
+          limit?: number;
+          isBlocked?: boolean;
+          isDeleted?: boolean;
+          role?: string;
+          sort?: "new" | "old";
+        } = { page: 1, limit: 10 }
+      ) => {
+        const page = args.page ?? 1;
+        const limit = args.limit ?? 10;
+
+        const params = new URLSearchParams();
+        params.set("page", String(page));
+        params.set("limit", String(limit));
+
+        if (typeof args.isBlocked !== "undefined") {
+          params.set("isBlocked", String(args.isBlocked)); // "true" or "false"
+        }
+        if (typeof args.isDeleted !== "undefined") {
+          params.set("isDeleted", String(args.isDeleted));
+        }
+        if (args.role) params.set("role", args.role);
+        if (args.sort) params.set("sort", args.sort);
+
+        return {
+          url: `/user/all-users?${params.toString()}`,
+          method: "GET",
+        };
+      },
       providesTags: ["user"],
-      transformResponse: (response) => response.data,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: any) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
     }),
 
     // GET ALL PARCELS ADMIN
@@ -135,7 +168,9 @@ export const parcelApi = baseApi.injectEndpoints({
           limit: 10,
         }
       ) => ({
-        url: `/parcel/admin/all-parcels?${args.search ? `search=${encodeURIComponent(args.search)}&` : ''}page=${args.page}&limit=${args.limit}`,
+        url: `/parcel/admin/all-parcels?${
+          args.search ? `search=${encodeURIComponent(args.search)}&` : ""
+        }page=${args.page}&limit=${args.limit}`,
         method: "GET",
       }),
       providesTags: ["parcel"],

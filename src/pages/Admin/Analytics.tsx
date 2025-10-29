@@ -81,7 +81,7 @@ export default function Analytics({
       <div className="flex items-center justify-center h-64">
         <div className="text-lg text-muted-foreground flex items-center gap-4">
           <p>Loading analytics...</p>
-          <Truck  className="text-xl text-primary"/>
+          <Truck className="text-xl text-primary" />
         </div>
       </div>
     );
@@ -151,11 +151,11 @@ export default function Analytics({
   return (
     <>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight text-muted-foreground">
+        <div className="md:flex md:items-center md:justify-between">
+          <h2 className="lg:text-2xl text-xs  font-bold tracking-tight text-muted-foreground my-1">
             Parcel Analytics
           </h2>
-          <h2 className="font-semibold text-4xl">
+          <h2 className="font-semibold lg:text-4xl">
             Parcel Delivery Success Rate
           </h2>
           <div className="text-right">

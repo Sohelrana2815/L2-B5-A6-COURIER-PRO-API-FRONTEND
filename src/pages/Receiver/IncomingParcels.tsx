@@ -137,12 +137,12 @@ const IncomingParcels = () => {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">trackingId</TableHead>
-            <TableHead>currentStatus</TableHead>
-            <TableHead className="text-right">senderName</TableHead>
-            <TableHead className="text-right">weightKg</TableHead>
-            <TableHead className="text-right">parcelType</TableHead>
-            <TableHead className="text-right">fee</TableHead>
+            <TableHead className="w-[100px]">TRK ID</TableHead>
+            <TableHead className="text-center">Parcel Status</TableHead>
+            <TableHead className="text-center">Sender Name</TableHead>
+            <TableHead className="text-center">Weight (Kg)</TableHead>
+            <TableHead className="text-center">Parcel Type</TableHead>
+            <TableHead className="text-center">Fee</TableHead>
             <TableHead className="text-center">Approve / Decline</TableHead>
           </TableRow>
         </TableHeader>
@@ -154,18 +154,23 @@ const IncomingParcels = () => {
           ) : (
             parcels.map((p: Parcel, idx: number) => (
               <TableRow key={p._id ?? idx}>
-                <TableCell className="font-medium">{p.trackingId}</TableCell>
-                <TableCell>
+                <TableCell className="font-medium text-center">
+                  {p.trackingId}
+                </TableCell>
+                <TableCell className="text-center">
                   <Badge className="text-xs">{p.currentStatus}</Badge>
                 </TableCell>
-                <TableCell className="text-right">{p.senderName}</TableCell>
-                <TableCell className="text-right">{p.weightKg}</TableCell>
-                <TableCell className="text-right">{p.parcelType}</TableCell>
-                <TableCell className="text-right">{p.fee}</TableCell>
+                <TableCell className="text-center">{p.senderName}</TableCell>
+                <TableCell className="text-center">{p.weightKg}</TableCell>
+                <TableCell className="text-center">{p.parcelType}</TableCell>
+                <TableCell className="text-center">
+                  <span className="text-2xl"> &#2547;</span> {p.fee}
+                </TableCell>
 
                 <TableCell className="text-center">
                   <Button
                     size="sm"
+                    variant="outline"
                     onClick={() => {
                       if (
                         p.currentStatus.toLowerCase().includes("approved") ||
@@ -186,11 +191,11 @@ const IncomingParcels = () => {
                     ) : p.currentStatus.toLowerCase().includes("approved") ||
                       p.currentStatus.toLowerCase().includes("approve") ? (
                       <div className="flex items-center gap-x-1">
-                        <p>Decline</p> <MdCancel />
+                        <p>Decline</p> <MdCancel className="text-chart-5" />
                       </div>
                     ) : (
                       <div className="flex items-center gap-x-1">
-                        <p>Approve</p> <Check />
+                        <p>Approve</p> <Check className="text-chart-2" />
                       </div>
                     )}
                   </Button>

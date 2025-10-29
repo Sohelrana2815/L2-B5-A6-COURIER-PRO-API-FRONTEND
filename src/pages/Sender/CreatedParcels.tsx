@@ -62,18 +62,18 @@ export default function CreatedParcels() {
     }
 
     try {
-      const result = await cancelParcel({
+      await cancelParcel({
         parcelId: parcelToCancel,
         note: cancelNote,
       }).unwrap();
 
       // Debug: Log the actual response
-      console.log("Cancel API response:", result);
+      // console.log("Cancel API response:", result);
 
       // Show success toast - simplified logic
       toast.success("Parcel canceled successfully!");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Cancel error:", error);
       toast.error(error?.data?.message || "Failed to cancel parcel");

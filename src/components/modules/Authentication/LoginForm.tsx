@@ -19,7 +19,6 @@ import { toast } from "sonner";
 import EyePassword from "@/components/ui/EyePassword";
 import config from "@/config";
 import { useNavigate } from "react-router";
-
 const loginSchema = z.object({
   email: z.email().min(5).max(50),
   password: z.string().min(8).max(50),
@@ -28,6 +27,7 @@ const loginSchema = z.object({
 export default function LoginForm() {
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -37,7 +37,6 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    console.log(data);
     const userData = {
       email: data.email,
       password: data.password,
@@ -45,14 +44,15 @@ export default function LoginForm() {
 
     try {
       const result = await login(userData).unwrap();
-      console.log(result);
       if (result?.success) {
-        // form.reset();
+        console.log("Login successful:", result);
         toast.success("Login successful!");
         navigate("/");
+        // Don't navigate here, let the useEffect handle it
       }
     } catch (error) {
-      console.error(error);
+      console.error("Login error:", error);
+      toast.error("Login failed. Please check your credentials.");
     }
   };
 
