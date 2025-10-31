@@ -45,19 +45,19 @@ export default function AboutHeader() {
                   <div className="text-3xl font-bold text-amber-500 mb-2">
                     500+
                   </div>
-                  <div className="text-gray-600">Happy Customers</div>
+                  <div className="text-muted-foreground">Happy Customers</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-amber-500 mb-2">
                     50+
                   </div>
-                  <div className="text-gray-600">Delivery Partners</div>
+                  <div className="text-muted-foreground">Delivery Partners</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-amber-500 mb-2">
                     24/7
                   </div>
-                  <div className="text-gray-600">Support Available</div>
+                  <div className="text-muted-foreground">Support Available</div>
                 </div>
               </div>
             </div>

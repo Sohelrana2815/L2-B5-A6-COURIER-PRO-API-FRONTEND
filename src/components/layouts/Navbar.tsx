@@ -128,9 +128,13 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
-              <Logo />
-            </a>
+            <Link
+              to="/"
+              className="text-primary hover:text-primary/90 flex items-center gap-2"
+            >
+              <Logo />{" "}
+              <h2 className="text-xs md:text-base font-serif">Courier Pro</h2>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">

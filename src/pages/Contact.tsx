@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import parcelBeg from "/src/assets/images/parcelbeg.webp";
+import contact from "/src/assets/images/contact.webp";
 import {
   Form,
   FormControl,
@@ -162,7 +163,7 @@ export default function Contact() {
             <div className="flex justify-center lg:justify-end">
               <div className="relative">
                 <img
-                  src="/src/assets/images/contact.webp"
+                  src={contact}
                   alt="Contact us"
                   className="w-full max-w-lg h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
                 />
